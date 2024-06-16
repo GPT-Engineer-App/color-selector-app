@@ -1,17 +1,32 @@
-// Update this page (the content is just a fallback if you fail and example)
-// Use chakra-ui
-import { Container, Text, VStack } from "@chakra-ui/react";
-
-// Example of using react-icons
-// import { FaRocket } from "react-icons/fa";
-// <IconButton aria-label="Add" icon={<FaRocket />} size="lg" />; // IconButton would also have to be imported from chakra
+import { useState, useEffect } from "react";
+import { Container, Text, VStack, Button, Input } from "@chakra-ui/react";
 
 const Index = () => {
+  const [color, setColor] = useState("#ffffff");
+
+  useEffect(() => {
+    const savedColor = localStorage.getItem("backgroundColor");
+    if (savedColor) {
+      setColor(savedColor);
+      document.body.style.backgroundColor = savedColor;
+    }
+  }, []);
+
+  const handleColorChange = (event) => {
+    setColor(event.target.value);
+  };
+
+  const applyColor = () => {
+    document.body.style.backgroundColor = color;
+    localStorage.setItem("backgroundColor", color);
+  };
+
   return (
     <Container centerContent maxW="container.md" height="100vh" display="flex" flexDirection="column" justifyContent="center" alignItems="center">
       <VStack spacing={4}>
-        <Text fontSize="2xl">Your Blank Canvas</Text>
-        <Text>Chat with the agent to start making edits.</Text>
+        <Text fontSize="2xl">Select a Background Color</Text>
+        <Input type="color" value={color} onChange={handleColorChange} />
+        <Button onClick={applyColor} colorScheme="blue">Apply Color</Button>
       </VStack>
     </Container>
   );
